@@ -6,7 +6,13 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'michellezhu'
 CORS(app, resources={r"/*": {"origins": "*"}})
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, 
+                   cors_allowed_origins="*",
+                   ping_timeout=60,
+                   ping_interval=25,
+                   async_mode='eventlet',
+                   logger=True,
+                   engineio_logger=True)
 
 # Welcome/Home page route
 @app.route('/')
@@ -39,4 +45,4 @@ def handle_join(data):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
-    socketio.run(app, host='0.0.0.0', port=port)
+    socketio.run(app, host='0.0.0.0', port=port, debug=True)
