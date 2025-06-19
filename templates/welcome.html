@@ -12,11 +12,14 @@
     <div class="confetti-container"></div>
     
     <audio id="bgMusic" loop>
-        <source src="{{ url_for('static', filename='music/birthday.mp3') }}" type="audio/mp3">
+        <source src="{{ url_for('static', filename='recording/birthday.mp3') }}" type="audio/mp3">
     </audio>
     
     <button onclick="document.getElementById('bgMusic').play()" class="music-btn">
         播放音乐 🎵
+    </button>
+    <button onclick="document.getElementById('bgMusic').pause()" class="music-btn">
+        暫停音樂 🎵
     </button>
 </div>
 {% endblock %}
