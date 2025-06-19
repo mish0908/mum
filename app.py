@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify
 import os
-from database import init_db
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'michellezhu'
@@ -21,5 +20,4 @@ def photo_album():
     return render_template('photo_album.html')
 
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True)
