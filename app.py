@@ -1,9 +1,7 @@
-from flask import Flask, render_template, request, jsonify
-from flask_socketio import SocketIO, emit
+from flask import Flask, render_template, request, jsonify, session
+from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
 import os
-import eventlet
-eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'michellezhu'
@@ -36,13 +34,24 @@ def chat():
     return render_template('chat.html', active_page='chat')
 
 # SocketIO event handlers
+@socketio.on('connect')
+def handle_connect():
+    emit('status', {'msg': 'Connected'}, broadcast=True)
+
 @socketio.on('message')
 def handle_message(data):
-    emit('message', data, broadcast=True)
+    print('Received message:', data)  # Debug log
+    emit('message', data, broadcast=True, include_self=False)
 
 @socketio.on('join')
 def handle_join(data):
+    print('User joined:', data)  # Debug log
     emit('user_joined', data, broadcast=True)
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')  # Debug log
+    emit('status', {'msg': 'Disconnected'}, broadcast=True)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
