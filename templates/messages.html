@@ -1,0 +1,454 @@
+{% extends "base.html" %}
+
+{% block title %}生日祝福{% endblock %}
+
+{% block styles %}
+<style>
+    body {
+        background: linear-gradient(135deg, #ffeef0 0%, #fff5f5 50%, #fef0f2 100%);
+        min-height: 100vh;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .messages-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .page-header {
+        margin-bottom: 40px;
+    }
+
+    .main-title {
+        font-size: 48px;
+        color: #333;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .subtitle {
+        font-size: 24px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .decorative-line {
+        width: 200px;
+        height: 3px;
+        background: linear-gradient(90deg, #ff4444, #ff6666, #ff4444);
+        margin: 20px auto;
+        border-radius: 2px;
+    }
+
+    .message-display-area {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        margin: 40px 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .message-display-area::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #ff4444, #ff6666, #ff8888, #ff6666, #ff4444);
+        background-size: 300% 300%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: gradientShift 3s ease infinite;
+    }
+
+    .current-message {
+        font-size: 28px;
+        line-height: 1.6;
+        color: #333;
+        margin: 30px 0;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+    }
+
+    .message-counter {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: #ff4444;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .controls {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin: 30px 0;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        background: #ff4444;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 15px 30px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn:hover {
+        background: #ff2222;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 68, 68, 0.4);
+    }
+
+    .btn:active {
+        transform: translateY(-1px);
+    }
+
+    .btn.loading {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    .auto-play-controls {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 30px 0;
+        backdrop-filter: blur(10px);
+    }
+
+    .auto-play-title {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .auto-play-btn {
+        background: #28a745;
+        margin-right: 15px;
+    }
+
+    .auto-play-btn:hover {
+        background: #218838;
+    }
+
+    .auto-play-btn.active {
+        background: #dc3545;
+    }
+
+    .auto-play-btn.active:hover {
+        background: #c82333;
+    }
+
+    .speed-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .speed-label {
+        font-size: 16px;
+        color: #666;
+    }
+
+    .speed-slider {
+        width: 150px;
+        height: 6px;
+        border-radius: 3px;
+        background: #ddd;
+        outline: none;
+        -webkit-appearance: none;
+    }
+
+    .speed-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #ff4444;
+        cursor: pointer;
+        border: 2px solid white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .decorative-elements {
+        position: relative;
+        margin: 40px 0;
+    }
+
+    .floating-emoji {
+        position: absolute;
+        font-size: 32px;
+        animation: float 3s infinite ease-in-out;
+        opacity: 0.7;
+    }
+
+    .emoji-1 { top: -20px; left: 10%; animation-delay: 0s; }
+    .emoji-2 { top: -30px; right: 15%; animation-delay: 1s; }
+    .emoji-3 { top: -10px; left: 50%; animation-delay: 2s; }
+    .emoji-4 { top: -25px; right: 40%; animation-delay: 0.5s; }
+
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .message-animation {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .pulse-animation {
+        animation: pulse 0.3s ease-in-out;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .messages-container {
+            padding: 20px 15px;
+        }
+        
+        .main-title {
+            font-size: 36px;
+        }
+        
+        .current-message {
+            font-size: 22px;
+            padding: 15px;
+        }
+        
+        .controls {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn {
+            width: 200px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="messages-container">
+    <div class="page-header">
+        <h1 class="main-title">🎂 生日祝福</h1>
+        <p class="subtitle">嚟自朋友仔嘅溫馨祝福</p>
+        <div class="decorative-line"></div>
+    </div>
+
+    <div class="decorative-elements">
+        <div class="floating-emoji emoji-1">🎉</div>
+        <div class="floating-emoji emoji-2">🎈</div>
+        <div class="floating-emoji emoji-3">✨</div>
+        <div class="floating-emoji emoji-4">🎁</div>
+    </div>
+
+    <div class="message-display-area">
+        <div class="message-counter" id="message-counter">祝福 1/30</div>
+        <div class="current-message" id="current-message">
+            載入緊祝福訊息...
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="loadRandomMessage()" id="random-btn">
+            🎲 隨機祝福
+        </button>
+        <button class="btn" onclick="nextMessage()" id="next-btn">
+            ➡️ 下一個
+        </button>
+        <button class="btn" onclick="previousMessage()" id="prev-btn">
+            ⬅️ 上一個
+        </button>
+    </div>
+
+    <div class="auto-play-controls">
+        <div class="auto-play-title">自動播放模式</div>
+        <button class="btn auto-play-btn" onclick="toggleAutoPlay()" id="auto-play-btn">
+            ▶️ 開始自動播放
+        </button>
+        <div class="speed-controls">
+            <span class="speed-label">速度:</span>
+            <input type="range" class="speed-slider" id="speed-slider" min="1" max="10" value="5" onchange="updateSpeed()">
+            <span class="speed-label" id="speed-display">5秒</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let messages = [];
+    let currentIndex = 0;
+    let autoPlayInterval = null;
+    let autoPlaySpeed = 5000; // 5 seconds default
+    let isAutoPlaying = false;
+
+    // Load all messages on page load
+    async function loadMessages() {
+        try {
+            const response = await fetch('/api/all_messages');
+            const data = await response.json();
+            
+            messages = data.messages;
+            if (messages.length > 0) {
+                showMessage(0);
+            }
+        } catch (error) {
+            console.error('Error loading messages:', error);
+            document.getElementById('current-message').textContent = '載入祝福訊息時出現錯誤 😔';
+        }
+    }
+
+    function showMessage(index) {
+        if (messages.length === 0) return;
+        
+        currentIndex = index;
+        const messageElement = document.getElementById('current-message');
+        const counterElement = document.getElementById('message-counter');
+        
+        // Add animation
+        messageElement.classList.add('message-animation');
+        
+        // Update content
+        messageElement.textContent = messages[currentIndex];
+        counterElement.textContent = `祝福 ${currentIndex + 1}/${messages.length}`;
+        
+        // Remove animation class after animation completes
+        setTimeout(() => {
+            messageElement.classList.remove('message-animation');
+        }, 600);
+    }
+
+    function loadRandomMessage() {
+        if (messages.length === 0) return;
+        
+        const randomIndex = Math.floor(Math.random() * messages.length);
+        showMessage(randomIndex);
+        
+        // Add pulse effect to button
+        const btn = document.getElementById('random-btn');
+        btn.classList.add('pulse-animation');
+        setTimeout(() => btn.classList.remove('pulse-animation'), 300);
+    }
+
+    function nextMessage() {
+        if (messages.length === 0) return;
+        
+        const nextIndex = (currentIndex + 1) % messages.length;
+        showMessage(nextIndex);
+    }
+
+    function previousMessage() {
+        if (messages.length === 0) return;
+        
+        const prevIndex = currentIndex === 0 ? messages.length - 1 : currentIndex - 1;
+        showMessage(prevIndex);
+    }
+
+    function toggleAutoPlay() {
+        const btn = document.getElementById('auto-play-btn');
+        
+        if (isAutoPlaying) {
+            // Stop auto play
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+            isAutoPlaying = false;
+            btn.textContent = '▶️ 開始自動播放';
+            btn.classList.remove('active');
+        } else {
+            // Start auto play
+            autoPlayInterval = setInterval(nextMessage, autoPlaySpeed);
+            isAutoPlaying = true;
+            btn.textContent = '⏸️ 停止自動播放';
+            btn.classList.add('active');
+        }
+    }
+
+    function updateSpeed() {
+        const slider = document.getElementById('speed-slider');
+        const display = document.getElementById('speed-display');
+        const speed = parseInt(slider.value);
+        
+        autoPlaySpeed = speed * 1000; // Convert to milliseconds
+        display.textContent = `${speed}秒`;
+        
+        // If auto play is active, restart with new speed
+        if (isAutoPlaying) {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = setInterval(nextMessage, autoPlaySpeed);
+        }
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', function() {
+        loadMessages();
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(event) {
+        switch(event.key) {
+            case 'ArrowRight':
+            case ' ':
+                event.preventDefault();
+                nextMessage();
+                break;
+            case 'ArrowLeft':
+                event.preventDefault();
+                previousMessage();
+                break;
+            case 'r':
+            case 'R':
+                event.preventDefault();
+                loadRandomMessage();
+                break;
+            case 'p':
+            case 'P':
+                event.preventDefault();
+                toggleAutoPlay();
+                break;
+        }
+    });
+</script>
+{% endblock %} 

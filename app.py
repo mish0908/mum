@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify, session
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
 import os
+import json
+import random
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'michellezhu'
@@ -22,6 +24,40 @@ def index():
 @app.route('/birthday_card', methods=['GET', 'POST'])
 def birthday_card():
     return render_template('card.html', active_page='card')
+
+# Random birthday message API
+@app.route('/api/random_message')
+def random_message():
+    try:
+        with open('birthday_messages.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        random_msg = random.choice(data['messages'])
+        return jsonify({"text": random_msg})
+    except Exception as e:
+        # Fallback message if file can't be read
+        return jsonify({
+            "text": "生日快樂！🎉"
+        })
+
+# API to get all birthday messages
+@app.route('/api/all_messages')
+def all_messages():
+    try:
+        with open('birthday_messages.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        return jsonify({"messages": data['messages']})
+    except Exception as e:
+        # Fallback messages if file can't be read
+        return jsonify({
+            "messages": ["生日快樂！🎉", "祝你身體健康！💖", "願你每日都開心！🌟"]
+        })
+
+# Messages page route
+@app.route('/messages')
+def messages():
+    return render_template('messages.html', active_page='messages')
 
 # Photo album route
 @app.route('/photo_album')

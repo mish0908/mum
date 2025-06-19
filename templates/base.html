@@ -67,10 +67,11 @@
 <body>
     <nav class="nav-bar">
         <div class="nav-container">
-            <a href="{{ url_for('index') }}" class="nav-link {% if active_page == 'home' %}active{% endif %}">Home</a>
-            <a href="{{ url_for('birthday_card') }}" class="nav-link {% if active_page == 'card' %}active{% endif %}">Birthday Card</a>
-            <a href="{{ url_for('photo_album') }}" class="nav-link {% if active_page == 'photos' %}active{% endif %}">Photo Album</a>
-            <a href="{{ url_for('chat') }}" class="nav-link {% if active_page == 'chat' %}active{% endif %}">Chat Room</a>
+            <a href="{{ url_for('index') }}" class="nav-link {% if active_page == 'home' %}active{% endif %}">主頁</a>
+            <a href="{{ url_for('birthday_card') }}" class="nav-link {% if active_page == 'card' %}active{% endif %}">生日卡</a>
+            <a href="{{ url_for('messages') }}" class="nav-link {% if active_page == 'messages' %}active{% endif %}">生日祝福</a>
+            <a href="{{ url_for('photo_album') }}" class="nav-link {% if active_page == 'photos' %}active{% endif %}">相簿</a>
+            <a href="{{ url_for('chat') }}" class="nav-link {% if active_page == 'chat' %}active{% endif %}">聊天室</a>
         </div>
     </nav>
     
