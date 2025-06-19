@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Photo Album{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/photo_album.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="album-container">
+    <div class="photo-grid">
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_3834.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_2050.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_4242.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_4219.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_9087.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_9067.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_5892.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_3528.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_2918.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_2798.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_1673.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/IMG_4012.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+        <div class="photo-item">
+            <div class="photo-frame">
+                <img src="{{ url_for('static', filename='images/swim.jpeg') }}" alt="Photo" loading="lazy">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}{% endblock %} 

@@ -2,6 +2,10 @@
 
 {% block title %}Welcome{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/welcome.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="welcome-container">
     <h1 class="animated-title">Happy Birthday! 🎉</h1>
@@ -15,4 +19,8 @@
         Play Music 🎵
     </button>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/confetti.js') }}"></script>
 {% endblock %} 

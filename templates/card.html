@@ -1,37 +1,202 @@
 {% extends "base.html" %}
 
-{% block title %}Birthday Messages{% endblock %}
+{% block title %}Birthday Card{% endblock %}
+
+{% block styles %}
+<style>
+    .card {
+        position: relative;
+        width: 800px;
+        height: 500px;
+        transform-style: preserve-3d;
+        perspective: 1500px;
+    }
+
+    .card-front {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #fff1f2;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transform-origin: left;
+        transition: transform 1s;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        overflow: hidden;
+        z-index: 3;
+    }
+
+    .card.open .card-front {
+        transform: rotateY(-180deg);
+    }
+
+    .left-page, .right-page {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 20px;
+        padding: 50px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .left-page {
+        z-index: 1;
+        left: 0;
+        transform-origin: right;
+        transition: transform 1s;
+    }
+
+    .right-page {
+        z-index: 0;
+        right: 0;
+        transform-origin: left;
+    }
+
+    .chinese-text {
+        font-size: 72px;
+        color: #333;
+        margin: 30px 0;
+        display: flex;
+        gap: 20px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .chinese-char {
+        display: inline-block;
+        animation: fadeIn 0.5s forwards;
+        opacity: 0;
+    }
+
+    .stars {
+        position: absolute;
+        font-size: 32px;
+        color: gold;
+    }
+
+    .star1 { top: 10%; left: 10%; animation: twinkle 1.5s infinite; }
+    .star2 { top: 20%; right: 15%; animation: twinkle 2s infinite; }
+    .star3 { bottom: 15%; left: 20%; animation: twinkle 1.8s infinite; }
+
+    .music-note {
+        position: absolute;
+        color: #ff4444;
+        font-size: 32px;
+        animation: float 3s infinite ease-in-out;
+    }
+
+    .speech-bubble {
+        position: absolute;
+        top: 10%;
+        right: 10%;
+        background: white;
+        border: 2px solid #ff4444;
+        border-radius: 20px;
+        padding: 10px 20px;
+        color: #ff4444;
+        font-size: 24px;
+    }
+
+    .subtitle {
+        position: absolute;
+        bottom: 60px;
+        font-size: 24px;
+        color: #666;
+        z-index: 2;
+    }
+
+    .page-content {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #333;
+        white-space: pre-wrap;
+    }
+
+    .page-title {
+        font-size: 32px;
+        color: #333;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .cake {
+        font-size: 64px;
+        margin: 30px 0;
+    }
+
+    .message-text {
+        font-size: 36px;
+        color: #333;
+        margin: 30px 0;
+        text-align: center;
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @keyframes fadeIn {
+        to { opacity: 1; }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="card-container">
-    <form id="messageForm" class="message-form">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <textarea name="message" placeholder="Write your birthday message..." required></textarea>
-        <button type="submit">Send Message 💌</button>
-    </form>
-
-    <div class="messages-container">
-        {% for message in messages %}
-        <div class="message-card">
-            <h3>{{ message[0] }}</h3>
-            <p>{{ message[1] }}</p>
-            <small>{{ message[2] }}</small>
+<div class="card">
+    <div class="card-front">
+        <div class="speech-bubble">FOR YOU</div>
+        <div class="stars star1">✦</div>
+        <div class="stars star2">✧</div>
+        <div class="stars star3">✦</div>
+        <div class="chinese-text">
+            <span class="chinese-char" style="animation-delay: 0.1s">生</span>
+            <span class="chinese-char" style="animation-delay: 0.2s">日</span>
+            <span class="chinese-char" style="animation-delay: 0.3s">快</span>
+            <span class="chinese-char" style="animation-delay: 0.4s">樂</span>
         </div>
-        {% endfor %}
+        <div class="cake">🎂</div>
+        <div class="music-note" style="top: 60%; left: 20%">♪</div>
+        <div class="music-note" style="top: 50%; right: 20%">♫</div>
+        <div class="subtitle">Today is your special day.</div>
+    </div>
+    <div class="left-page">
+        <div class="page-title">媽媽生日快樂！</div>
+        <div class="page-content">
+            18歲（48歲）了喔～歲月雖然悄悄地走，但你一直都係我心中最獨特、最有個性的媽媽。多謝你一直用你嘅方式陪住我，雖然你唔煮飯、唔做家務、唔返工，但你嘅存在就係屋企最穩定嘅一部分。
+            不過呢，作為你最貼心嘅女，生日都要提一提你：記得要多啲郁下身、出吓去行下，對身體好，精神都會更好。我希望你唔只係開心過生日，而係可以日日都健康、自在、無憂
+            未來一年，希望你多啲笑，做返少少運動，愛惜自己多啲
+            愛你 ❤️
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-document.getElementById('messageForm').onsubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    await fetch('/card', {
-        method: 'POST',
-        body: formData
+    document.querySelector('.card').addEventListener('click', function() {
+        this.classList.toggle('open');
     });
-    location.reload();
-};
+
+    document.querySelectorAll('.chinese-char').forEach((char, index) => {
+        setTimeout(() => {
+            char.style.opacity = '1';
+        }, index * 200);
+    });
 </script>
 {% endblock %} 

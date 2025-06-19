@@ -1,0 +1,137 @@
+.welcome-container {
+    text-align: center;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(rgba(255, 245, 245, 0.9), rgba(255, 245, 245, 0.9)), 
+                url('../images/swim.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.welcome-container::before {
+    content: '✨';
+    position: absolute;
+    font-size: 24px;
+    animation: sparkle 2s infinite;
+    opacity: 0.6;
+}
+
+.welcome-container::after {
+    content: '✨';
+    position: absolute;
+    font-size: 24px;
+    animation: sparkle 2s infinite 1s;
+    opacity: 0.6;
+}
+
+@keyframes sparkle {
+    0% {
+        transform: translate(20vw, 20vh) scale(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(80vw, 80vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
+.animated-title {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    color: #ff6b6b;
+    animation: titleAnimation 3s ease-in-out infinite;
+    text-shadow: 2px 2px 4px rgba(255, 107, 107, 0.2);
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 2px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+}
+
+@keyframes titleAnimation {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05) rotate(2deg);
+    }
+}
+
+.music-btn {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(45deg, #ff8fa3, #ffc2d1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 143, 163, 0.3);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.music-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.13) 77%, rgba(255,255,255,0.5) 92%, rgba(255,255,255,0.0) 100%);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% {
+        top: -50%;
+        left: -50%;
+    }
+    100% {
+        top: 150%;
+        left: 150%;
+    }
+}
+
+.music-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 143, 163, 0.4);
+    background: linear-gradient(45deg, #ff7a93, #ffb1c3);
+}
+
+.music-btn:active {
+    transform: translateY(1px);
+}
+
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Add some basic animations for confetti (we'll add JS for this later) */
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+    }
+} 
