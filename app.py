@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, emit
+from flask_cors import CORS
 import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'michellezhu'
-socketio = SocketIO(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='gevent')
 
 # Welcome/Home page route
 @app.route('/')
@@ -37,4 +39,4 @@ def handle_join(data):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
-    socketio.run(app, host='0.0.0.0', port=port, debug=True)
+    socketio.run(app, host='0.0.0.0', port=port, debug=True, allow_unsafe_werkzeug=True)

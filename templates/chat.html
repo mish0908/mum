@@ -238,7 +238,13 @@
 {% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script>
-    let socket = io();
+    let socket = io({
+        transports: ['websocket'],
+        upgrade: false,
+        cors: {
+            origin: "*"
+        }
+    });
     let username = '';
     let currentBackground = '#f0f0f0';
     let currentPattern = null;
