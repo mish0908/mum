@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Birthday Messages{% endblock %}
+
+{% block content %}
+<div class="card-container">
+    <form id="messageForm" class="message-form">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <textarea name="message" placeholder="Write your birthday message..." required></textarea>
+        <button type="submit">Send Message 💌</button>
+    </form>
+
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="message-card">
+            <h3>{{ message[0] }}</h3>
+            <p>{{ message[1] }}</p>
+            <small>{{ message[2] }}</small>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('messageForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    await fetch('/card', {
+        method: 'POST',
+        body: formData
+    });
+    location.reload();
+};
+</script>
+{% endblock %} 

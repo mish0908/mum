@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="welcome-container">
+    <h1 class="animated-title">Happy Birthday! 🎉</h1>
+    <div class="confetti-container"></div>
+    
+    <audio id="bgMusic" loop>
+        <source src="{{ url_for('static', filename='music/birthday.mp3') }}" type="audio/mp3">
+    </audio>
+    
+    <button onclick="document.getElementById('bgMusic').play()" class="music-btn">
+        Play Music 🎵
+    </button>
+</div>
+{% endblock %} 
