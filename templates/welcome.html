@@ -11,19 +11,90 @@
     <h1 class="animated-title">生日快樂! 🎉</h1>
     <div class="confetti-container"></div>
     
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop preload="auto">
         <source src="{{ url_for('static', filename='recording/birthday.mp3') }}" type="audio/mp3">
+        你嘅瀏覽器唔支持音頻播放。
     </audio>
     
-    <button onclick="document.getElementById('bgMusic').play()" class="music-btn">
-        播放音乐 🎵
-    </button>
-    <button onclick="document.getElementById('bgMusic').pause()" class="music-btn">
-        暫停音樂 🎵
-    </button>
+    <div class="music-controls">
+        <button id="playBtn" class="music-btn">
+            🎵 播放音樂
+        </button>
+        <button id="pauseBtn" class="music-btn" style="display: none;">
+            ⏸️ 暫停音樂
+        </button>
+        <div id="musicStatus" class="music-status"></div>
+    </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/confetti.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const audio = document.getElementById('bgMusic');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const musicStatus = document.getElementById('musicStatus');
+        
+        // Set volume to a reasonable level
+        audio.volume = 0.7;
+        
+        playBtn.addEventListener('click', function() {
+            audio.play().then(() => {
+                console.log('音樂開始播放');
+                playBtn.style.display = 'none';
+                pauseBtn.style.display = 'inline-block';
+                musicStatus.textContent = '🎵 播放緊...';
+                musicStatus.className = 'music-status playing';
+            }).catch((error) => {
+                console.error('播放失敗:', error);
+                musicStatus.textContent = '❌ 播放失敗，請重試';
+                musicStatus.className = 'music-status error';
+            });
+        });
+        
+        pauseBtn.addEventListener('click', function() {
+            audio.pause();
+            playBtn.style.display = 'inline-block';
+            pauseBtn.style.display = 'none';
+            musicStatus.textContent = '⏸️ 已暫停';
+            musicStatus.className = 'music-status paused';
+        });
+        
+        // Handle when audio ends (though it's looped)
+        audio.addEventListener('ended', function() {
+            playBtn.style.display = 'inline-block';
+            pauseBtn.style.display = 'none';
+            musicStatus.textContent = '';
+            musicStatus.className = 'music-status';
+        });
+        
+        // Handle audio loading
+        audio.addEventListener('loadstart', function() {
+            musicStatus.textContent = '📡 載入緊音樂...';
+            musicStatus.className = 'music-status loading';
+        });
+        
+        audio.addEventListener('canplay', function() {
+            if (musicStatus.textContent === '📡 載入緊音樂...') {
+                musicStatus.textContent = '✅ 音樂準備好喇！';
+                musicStatus.className = 'music-status ready';
+                setTimeout(() => {
+                    if (musicStatus.className === 'music-status ready') {
+                        musicStatus.textContent = '';
+                        musicStatus.className = 'music-status';
+                    }
+                }, 3000);
+            }
+        });
+        
+        // Handle errors
+        audio.addEventListener('error', function(e) {
+            console.error('音頻錯誤:', e);
+            musicStatus.textContent = '❌ 音樂檔案載入失敗';
+            musicStatus.className = 'music-status error';
+        });
+    });
+</script>
 {% endblock %} 
