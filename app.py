@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 import os
+import eventlet
+eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'michellezhu'
@@ -10,7 +12,6 @@ socketio = SocketIO(app,
                    cors_allowed_origins="*",
                    ping_timeout=60,
                    ping_interval=25,
-                   async_mode='eventlet',
                    logger=True,
                    engineio_logger=True)
 
